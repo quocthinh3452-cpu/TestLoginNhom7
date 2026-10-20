@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Đăng nhập Social</title>
-    <!-- Sử dụng Tailwind CSS qua CDN để tạo giao diện nhanh gọn -->
+    <!-- Sử dụng Tailwind CSS qua CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
@@ -42,16 +42,19 @@
         </div>
     </div>
 
-    <!-- Tích hợp Firebase SDK (Phiên bản Modular v10) -->
+    <!-- Tích hợp Firebase SDK -->
     <script type="module">
-        // Import the functions you need from the SDKs you need
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-import { getAuth, GoogleAuthProvider, GithubAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-        // TODO: Add SDKs for Firebase products that you want to use
-        // https://firebase.google.com/docs/web/setup#available-libraries
+        import { 
+            getAuth, 
+            GoogleAuthProvider, 
+            GithubAuthProvider, 
+            signInWithPopup, 
+            onAuthStateChanged, 
+            signOut 
+        } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-        // Your web app's Firebase configuration
-        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+        // Cấu hình Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyAJOu_6ASL08bRO5RlLQvXElXeyCJL0Kc0",
             authDomain: "testloginnhom7.firebaseapp.com",
@@ -62,8 +65,9 @@ import { getAuth, GoogleAuthProvider, GithubAuthProvider, signInWithPopup } from
             measurementId: "G-TCN3TP43J5"
         };
 
-        // Initialize Firebase
+        // Khởi tạo Firebase App & Auth
         const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
 
         // Khởi tạo Providers
         const googleProvider = new GoogleAuthProvider();
@@ -103,8 +107,8 @@ import { getAuth, GoogleAuthProvider, GithubAuthProvider, signInWithPopup } from
             try {
                 await signInWithPopup(auth, googleProvider);
             } catch (error) {
-                console.error("Lỗi:", error);
-                alert("Đăng nhập Google thất bại!");
+                console.error("Lỗi Google Auth:", error);
+                alert("Đăng nhập Google thất bại: " + error.message);
             }
         });
 
@@ -113,8 +117,8 @@ import { getAuth, GoogleAuthProvider, GithubAuthProvider, signInWithPopup } from
             try {
                 await signInWithPopup(auth, githubProvider);
             } catch (error) {
-                console.error("Lỗi:", error);
-                alert("Đăng nhập GitHub thất bại!");
+                console.error("Lỗi GitHub Auth:", error);
+                alert("Đăng nhập GitHub thất bại: " + error.message);
             }
         });
 
@@ -123,7 +127,7 @@ import { getAuth, GoogleAuthProvider, GithubAuthProvider, signInWithPopup } from
             try {
                 await signOut(auth);
             } catch (error) {
-                console.error("Lỗi:", error);
+                console.error("Lỗi Đăng xuất:", error);
             }
         });
     </script>
